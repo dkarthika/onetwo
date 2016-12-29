@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import Example from './Example';
 
-const ONE_SECOND = 1000;
+
 
 class App extends Component {
   constructor() {
@@ -10,40 +11,43 @@ class App extends Component {
 
     // Initialize state in the constructor; this is the only place you
     // can set the state directly without using this.setState
-    this.state = { meh: false };
+    this.state = { text: 'bus car plane hello world'
+  };
 
-    // This binding is necessary to make `this` work in the callback
-    this.moodSwing = this.moodSwing.bind(this);
+    this.updateText=this.updateText.bind(this);
 
-    setInterval(this.moodSwing, 2 * ONE_SECOND);
+  }
+  updateText(ev)
+  {
+    const value=ev.currentTarget.value;
+  //  console.log("hey, updated",value);
+    this.setState({text:value});
   }
 
-  moodSwing() {
-    // To update the state, you must use setState,
-    // NOT: this.state.meh = !this.state.meh;
+  handleChange(ev)
+  {
     this.setState({
-      meh: !this.state.meh,
+      value:ev.target.value,
     });
   }
 
+
   render() {
-    let icon = 'mood fa fa-smile-o fa-3x';
-
-    if (this.state.meh) {
-      icon = icon.replace('smile', 'meh'); // or frown
-    }
-
     return (
       <div className="App">
-        {/* You can use Bootstrap markup */}
-        <div className="alert alert-info" role="alert">
-          {/* You can use FontAwesome icons */}
-          <i className={icon} />
-          To get started, edit src/App.js and save to reload.
-        </div>
+        <div className="form-group">
+          <textarea
+            className="form-control"
+            value={this.state.text}
+          onChange={this.updateText}
+ ref={(el)=>el && el.focus()}/>
+          <p onChange = {this.updateText}> {this.state.text}</p>
+          <Example text={this.state.text} foo="bar"/>
       </div>
+    </div>
     );
   }
 }
+
 
 export default App;
